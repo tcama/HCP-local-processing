@@ -41,7 +41,8 @@ gunzip goodvoxels.nii.gz
 
 # copy needed functions to data directory and begin processing (1_RL)
 cd "$homedir"/HCP/data/"$1"/rfMRI_REST1_RL/
-./"$homedir"/roi_preprocess rfMRI_REST1_RL_hp2000_clean.nii AAL627_10202016.nii goodvoxels.nii
+cp "$homedir"/AAL627_10202016.nii "$homedir"/HCP/data/"$1"/rfMRI_REST1_RL/
+"$homedir"/roi_preprocess rfMRI_REST1_RL_hp2000_clean.nii AAL627_10202016.nii goodvoxels.nii
 mv "$homedir"/HCP/data/$1/rfMRI_REST1_RL/goodvoxels_new.csv "$homedir"/HCP/results/"$1"/goodvoxels_new1_RL.csv
 mv "$homedir"/HCP/data/$1/rfMRI_REST1_RL/mean_data.csv "$homedir"/HCP/results/"$1"/mean_data1_RL.csv
 mv "$homedir"/HCP/data/$1/rfMRI_REST1_RL/snr_data.csv "$homedir"/HCP/results/"$1"/snr_data1_RL.csv
@@ -58,7 +59,8 @@ gunzip goodvoxels.nii.gz
 
 # copy needed functions to data directory and begin processing (2_RL)
 cd "$homedir"/HCP/data/"$1"/rfMRI_REST2_RL/
-./"$homedir"/roi_preprocess rfMRI_REST2_RL_hp2000_clean.nii AAL627_10202016.nii goodvoxels.nii
+cp "$homedir"/AAL627_10202016.nii "$homedir"/HCP/data/"$1"/rfMRI_REST2_RL/
+"$homedir"/roi_preprocess rfMRI_REST2_RL_hp2000_clean.nii AAL627_10202016.nii goodvoxels.nii
 mv "$homedir"/HCP/data/$1/rfMRI_REST2_RL/goodvoxels_new.csv "$homedir"/HCP/results/"$1"/goodvoxels_new2_RL.csv
 mv "$homedir"/HCP/data/$1/rfMRI_REST2_RL/mean_data.csv "$homedir"/HCP/results/"$1"/mean_data2_RL.csv
 mv "$homedir"/HCP/data/$1/rfMRI_REST2_RL/snr_data.csv "$homedir"/HCP/results/"$1"/snr_data2_RL.csv
@@ -79,7 +81,8 @@ gunzip goodvoxels.nii.gz
 
 # copy needed functions to data directory and begin processing (1_LR)
 cd "$homedir"/HCP/data/"$1"/rfMRI_REST1_LR/
-./"$homedir"/roi_preprocess rfMRI_REST1_LR_hp2000_clean.nii AAL627_10202016.nii goodvoxels.nii
+cp "$homedir"/AAL627_10202016.nii "$homedir"/HCP/data/"$1"/rfMRI_REST1_LR/
+"$homedir"/roi_preprocess rfMRI_REST1_LR_hp2000_clean.nii AAL627_10202016.nii goodvoxels.nii
 mv "$homedir"/HCP/data/$1/rfMRI_REST1_LR/goodvoxels_new.csv "$homedir"/HCP/results/"$1"/goodvoxels_new1_LR.csv
 mv "$homedir"/HCP/data/$1/rfMRI_REST1_LR/mean_data.csv "$homedir"/HCP/results/"$1"/mean_data1_LR.csv
 mv "$homedir"/HCP/data/$1/rfMRI_REST1_LR/snr_data.csv "$homedir"/HCP/results/"$1"/snr_data1_LR.csv
@@ -96,7 +99,8 @@ gunzip goodvoxels.nii.gz
 
 # copy needed functions to data directory and begin processing (2_LR)
 cd "$homedir"/HCP/data/"$1"/rfMRI_REST2_LR/
-./"$homedir"/roi_preprocess rfMRI_REST2_LR_hp2000_clean.nii AAL627_10202016.nii goodvoxels.nii
+cp "$homedir"/AAL627_10202016.nii "$homedir"/HCP/data/"$1"/rfMRI_REST2_LR/
+"$homedir"/roi_preprocess rfMRI_REST2_LR_hp2000_clean.nii AAL627_10202016.nii goodvoxels.nii
 mv "$homedir"/HCP/data/$1/rfMRI_REST2_LR/goodvoxels_new.csv "$homedir"/HCP/results/"$1"/goodvoxels_new2_LR.csv
 mv "$homedir"/HCP/data/$1/rfMRI_REST2_LR/mean_data.csv "$homedir"/HCP/results/"$1"/mean_data2_LR.csv
 mv "$homedir"/HCP/data/$1/rfMRI_REST2_LR/snr_data.csv "$homedir"/HCP/results/"$1"/snr_data2_LR.csv
@@ -109,19 +113,13 @@ cd "$homedir"/HCP/results/"$1"/
 cat meancenter1_LR.csv meancenter2_LR.csv > meancenter_LR.csv
 
 # calculate correlation matrices
-./"$homedir"/fcMat_generation meancenter_RL.csv $ROIs $TRs
+"$homedir"/fcMat_generation meancenter_RL.csv $ROIs $TRs
 mv fcMap.csv fcMap_RL.csv
-./"$homedir"/fcMat_generation meancenter_LR.csv $ROIs $TRs
+"$homedir"/fcMat_generation meancenter_LR.csv $ROIs $TRs
 mv fcMap.csv fcMap_LR.csv
 
 # remove extraneous data files
 rm goodvoxels* meancenter*
-
-# compress data files (contains timeseries for each ROI)
-mkdir "$homedir"/HCP/results/"$1"/compressed_data/
-mv roi_data* "$homedir"/HCP/results/"$1"/compressed_data/
-zip compressed_data.zip compressed_data/
-rm -R "$homedir"/HCP/results/"$1"/compressed_data
 
 # move data files to HCP_raw_data and delete zipped downloads
 rm -R "$homedir"/HCP/data/"$1"
